@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Ashi!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Parisienne&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #4a5568;
+            background: linear-gradient(135deg, #fbcfe8, #f0e6f5, #fce9e9);
+            transition: background-color 0.5s ease;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .screen {
+            display: none;
+            min-height: 100vh;
+        }
+        .screen.active {
+            display: flex;
+        }
+        .container {
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.4);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 2.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 40px rgba(255, 182, 193, 0.4);
+            padding: 3rem;
+            text-align: center;
+            max-width: 40rem;
+            width: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            animation: fadeIn 1s ease-in-out;
+        }
+        .card.quiz-card {
+            max-width: 48rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn {
+            background: linear-gradient(45deg, #ffb6c1, #e6a8d7);
+            color: white;
+            padding: 1rem 3rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+            border: none;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6);
+            filter: brightness(1.1);
+        }
+        .message-box {
+            background-color: rgba(255, 240, 245, 0.8);
+            border: 2px solid #e879f9;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px #e879f9;
+        }
+        .collage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .photo-block {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .photo-block:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+        }
+        .photo-block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.5rem;
+        }
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .photo-block:hover .photo-caption {
+            opacity: 1;
+        }
+        .locked-block {
+            background-color: #d1d5db;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background-image: linear-gradient(to right, #e879f9, #ff69b4);
+            transition: width 0.5s ease;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        .floating-element {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes sparkle-fade {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        .sparkle {
+            position: absolute;
+            color: #fff;
+            font-size: 1rem;
+            animation: sparkle-fade 3s linear infinite;
+        }
+        .modal-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border-radius: 2rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 28rem;
+            width: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+        .game-item {
+            position: absolute;
+            bottom: -50px;
+            cursor: pointer;
+            animation: float-up-game-item linear forwards;
+            font-size: 2.5rem;
+            text-shadow: 0 0 5px #fff, 0 0 10px #ffc0cb;
+        }
+        @keyframes float-up-game-item {
+            from { bottom: -50px; }
+            to { bottom: calc(100% + 50px); }
+        }
+        .game-item.pop {
+            transform: scale(1.5) !important;
+            opacity: 0;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .game-area-base {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 1.5rem;
+            border: 2px solid rgba(255, 182, 193, 0.6);
+            overflow: hidden;
+            position: relative;
+        }
+        .star-bomb, .star-item-game {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+            animation: float-up-game linear forwards;
+            font-size: 2.5rem;
+            text-shadow: 0 0 5px #fff;
+        }
+        @keyframes float-up-game {
+            from { top: 100%; }
+            to { top: -20%; }
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 1.5rem;
+            height: 1.5rem;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* New Constellation Game Styles */
+        #constellation-game-area {
+            position: relative;
+            cursor: crosshair;
+            background-color: #0d0f1c; /* A deep navy blue for a starry night */
+            background-size: cover;
+            background-position: center;
+        }
+        .constellation-star {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px #fff, 0 0 10px #ffc0cb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #ff69b4;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 20;
+        }
+        .constellation-star:hover {
+            transform: scale(1.5);
+        }
+        .constellation-star.active {
+            transform: scale(1.8);
+            background-color: #ffc0cb;
+            box-shadow: 0 0 15px 5px #ff69b4;
+        }
+        .star-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, #e879f9, #ff69b4);
+            z-index: 10;
+            transform-origin: 0 0;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+        .constellation-name-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            color: #4a5568;
+            font-family: 'Cormorant Garamond', serif;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            max-width: 90%;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .constellation-name-box.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-start min-h-screen">
+
+    <!-- Floating sparkles and elements -->
+    <div class="absolute w-full h-full overflow-hidden top-0 left-0 pointer-events-none z-0">
+        <span class="sparkle text-3xl" style="left: 10%; top: 20%; animation-delay: 2s;">✨</span>
+        <span class="sparkle text-xl" style="left: 25%; top: 60%; animation-delay: 5s;">🌸</span>
+        <span class="sparkle text-2xl" style="left: 50%; top: 80%; animation-delay: 8s;">💖</span>
+        <span class="sparkle text-xl" style="left: 75%; top: 10%; animation-delay: 3s;">✨</span>
+        <span class="sparkle text-3xl" style="left: 90%; top: 40%; animation-delay: 6s;">🌷</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active container flex-col">
+        <div class="card">
+            <h1 class="text-6xl md:text-7xl font-bold text-pink-600 mb-6 font-['Parisienne']">Happy Birthday Ashi ✨</h1>
+            <p class="text-2xl text-gray-700 mb-8 font-semibold font-['Cormorant_Garamond']">Your dreamy journey begins here</p>
+            <button id="start-btn" class="btn">Start Journey 💖</button>
+        </div>
+    </div>
+
+    <!-- Start Modal -->
+    <div id="start-modal" class="screen absolute z-50 top-0 left-0 w-full h-full justify-center items-center p-4">
+        <div class="modal-card">
+            <h2 class="text-3xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">Confirm Details</h2>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-lg font-semibold mb-2">Enter your birthdate (DDMM)</label>
+                    <input id="date-input" type="text" placeholder="DDMM" maxlength="4" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center">
+                </div>
+                <div>
+                    <label class="block text-lg font-semibold mb-2">Our Instagram Group Name</label>
+                    <input id="group-input" type="text" placeholder="H._._._ _ _" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center">
+                </div>
+            </div>
+            <div id="modal-message" class="mt-4 text-sm font-semibold text-red-600"></div>
+            <button id="modal-submit-btn" class="btn mt-6">Submit</button>
+        </div>
+    </div>
+
+    <!-- Game 1: Memory Matching Game -->
+    <div id="game1-screen" class="screen container flex-col">
+        <div class="card quiz-card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">Game 1: Find the Match!</h2>
+            <p class="text-gray-700 mb-4">Click on two cards to find a matching pair. Match all of them to pass!</p>
+            <div id="matching-game-board" class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4"></div>
+            <div id="game1-message" class="mt-4 text-lg font-semibold text-green-600"></div>
+            <div class="mt-6 flex justify-between">
+                <button id="back-btn-1" class="btn bg-gray-400 hover:bg-gray-500">Back</button>
+                <button id="next-game-btn1" class="btn" style="display: none;">Next Challenge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game 2: Catch the Hearts! -->
+    <div id="game2-screen" class="screen container flex-col">
+        <div class="card quiz-card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant+Garamond']">Game 2: Catch the Hearts!</h2>
+            <p class="text-gray-700 mb-4">Catch the beautiful hearts as they float up! Catch 10 to complete the game. But watch out for the bombs! 💣</p>
+            <div id="balloon-game-area" class="w-full h-64 game-area-base"></div>
+            <div id="balloon-count" class="mt-4 text-xl font-semibold text-pink-500">Caught: 0/10</div>
+            <div id="game2-message" class="mt-4 text-lg font-semibold text-green-600"></div>
+            <div class="mt-6 flex justify-between">
+                <button id="back-btn-2" class="btn bg-gray-400 hover:bg-gray-500">Back</button>
+                <button id="next-game-btn2" class="btn" style="display: none;">Next Challenge</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game 3: Connect the Constellations! -->
+    <div id="game3-screen" class="screen container flex-col">
+        <div class="card quiz-card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">Game 3: Connect the Constellations!</h2>
+            <p class="text-gray-700 mb-4">Connect the stars in the correct numerical order to reveal a constellation from your birthday sky!</p>
+            <div id="constellation-game-area" class="w-full h-96 game-area-base" style="background-image: url('https://placehold.co/800x600/0d0f1c/FFFFFF?text=Starry+Night');">
+            </div>
+            <div id="constellation-message-box" class="constellation-name-box"></div>
+            <!-- Added constellation-count element here -->
+            <div id="constellation-count" class="mt-4 text-xl font-semibold text-pink-500">Constellations: 0/2</div>
+            <div id="game3-message" class="mt-4 text-lg font-semibold text-green-600"></div>
+            <div class="mt-6 flex justify-between">
+                <button id="back-btn-3" class="btn bg-gray-400 hover:bg-gray-500">Back</button>
+                <button id="next-game-btn3" class="btn" style="display: none;">Next Challenge</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game 4: The Ashi Quiz -->
+    <div id="game4-screen" class="screen container flex-col">
+        <div class="card quiz-card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">Game 4: The Ashi Quiz!</h2>
+            <p class="text-gray-700 mb-4">Answer the questions correctly to pass!</p>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-lg font-semibold mb-2">Question 1: Where do we three hangout the most? (Hint: Locality)</p>
+                    <input id="q1-input" type="text" placeholder="Your Answer" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center bg-transparent">
+                </div>
+                <div>
+                    <p class="text-lg font-semibold mb-2">Question 2: Name of your crush?</p>
+                    <input id="q2-input" type="text" placeholder="Your Answer" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center bg-transparent">
+                </div>
+                <div>
+                    <p class="text-lg font-semibold mb-2">Question 3: Who is the most handsome guy? (Hint: hehe 👓)</p>
+                    <input id="q3-input" type="text" placeholder="Your Answer" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center bg-transparent">
+                </div>
+            </div>
+            <div id="game4-message" class="mt-4 text-lg font-semibold"></div>
+            <div class="mt-6 flex justify-between">
+                <button id="back-btn-4" class="btn bg-gray-400 hover:bg-gray-500">Back</button>
+                <button id="submit-quiz-btn" class="btn">Submit Answers</button>
+                <button id="next-game-btn4" class="btn" style="display: none;">Next Challenge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Stage -->
+    <div id="final-screen" class="screen container flex-col">
+        <div class="card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">You did it, Ashi! 🎉</h2>
+            <p class="text-lg text-gray-700 mb-4">You've unlocked this special space just for you.</p>
+            <!-- Collages (Placeholder images) -->
+            <div class="collage">
+            <div class="photo-block aspect-square">
+                <img src="images/image-1.png" alt="Collage Photo 1">
+                <div class="photo-caption">Just a girl and her flowers. 🌼</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-2.png" alt="Collage Photo 2">
+                <div class="photo-caption">Glowing as usual/div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-3.jpg" alt="Collage Photo 3">
+                <div class="photo-caption">Getting ready and looking pretty.</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-4.jpg" alt="Collage Photo 4">
+                <div class="photo-caption">That smile says it all</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-5.jpg" alt="Collage Photo 5">
+                <div class="photo-caption">The trio</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-6.jpg" alt="Collage Photo 6">
+                <div class="photo-caption">Black and white, but our memories are in full color</div>
+            </div>
+            <div class="photo-block locked-block aspect-square">
+                <i class="fas fa-lock text-5xl text-gray-400 mb-2"></i>
+                <p class="font-bold">kya kya karna padh tha hai tere liye</p>
+            </div>
+        </div>
+
+            <div class="mt-8">
+                <p class="text-lg font-semibold text-gray-700 mb-2">Unlock a secret message!</p>
+                <input id="password-input" type="password" placeholder="Enter password" class="w-full p-3 rounded-lg border-2 border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-500 text-center">
+                <p class="text-sm text-gray-500 mt-2 mb-4">Hint: The password rhymes with "sodhu".</p>
+                <button id="unlock-btn" class="btn w-full">Unlock Message</button>
+            </div>
+
+            <div id="secret-message-container" class="message-box" style="display: none;">
+                <p id="secret-message" class="text-pink-800 font-semibold text-lg"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const screens = ['welcome-screen', 'game1-screen', 'game2-screen', 'game3-screen', 'game4-screen', 'final-screen'];
+        let currentScreenIndex = 0;
+        const progressbar = document.getElementById('progress-bar');
+        const starGameArea = document.getElementById('star-game-area');
+        const balloonGameArea = document.getElementById('balloon-game-area');
+        const heartEmojis = ['💖', '✨', '💎', '🌸', '💫'];
+        
+        function updateProgress() {
+            const totalGames = 4;
+            const progress = (currentScreenIndex) / totalGames * 100;
+            progressbar.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function showScreen(screenId) {
+            screens.forEach(id => {
+                const screen = document.getElementById(id);
+                if (screen) {
+                    screen.classList.remove('active');
+                }
+            });
+            const activeScreen = document.getElementById(screenId);
+            if (activeScreen) {
+                activeScreen.classList.add('active');
+            }
+        }
+        
+        function spawnConfetti() {
+            const container = document.body;
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                container.appendChild(confetti);
+            }
+        }
+
+        // --- Navigation ---
+        document.getElementById('start-btn').addEventListener('click', () => {
+            document.getElementById('start-modal').classList.add('active');
+            document.getElementById('welcome-screen').classList.remove('active');
+        });
+
+        document.getElementById('modal-submit-btn').addEventListener('click', () => {
+            const dateInput = document.getElementById('date-input').value.trim();
+            const groupInput = document.getElementById('group-input').value.trim().toLowerCase();
+            const modalMessage = document.getElementById('modal-message');
+            if (dateInput === '0709' && groupInput === 'h.a.a.hehe') {
+                document.getElementById('start-modal').classList.remove('active');
+                currentScreenIndex = 1;
+                showScreen(screens[currentScreenIndex]);
+                updateProgress();
+                createBoard();
+            } else {
+                modalMessage.textContent = 'Incorrect details. Please try again!';
+            }
+        });
+        
+        document.getElementById('next-game-btn1').addEventListener('click', () => {
+            currentScreenIndex = 2;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+            startGame2();
+        });
+        document.getElementById('next-game-btn2').addEventListener('click', () => {
+            currentScreenIndex = 3;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+            startGame3();
+        });
+        document.getElementById('next-game-btn3').addEventListener('click', () => {
+            currentScreenIndex = 4;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+        });
+        document.getElementById('next-game-btn4').addEventListener('click', () => {
+            currentScreenIndex = 5;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+        });
+
+        // --- Back buttons ---
+        document.getElementById('back-btn-1').addEventListener('click', () => {
+            currentScreenIndex = 0;
+            showScreen('welcome-screen');
+            updateProgress();
+        });
+        document.getElementById('back-btn-2').addEventListener('click', () => {
+            currentScreenIndex = 1;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+            createBoard();
+        });
+        document.getElementById('back-btn-3').addEventListener('click', () => {
+            currentScreenIndex = 2;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+            startGame2();
+        });
+        document.getElementById('back-btn-4').addEventListener('click', () => {
+            currentScreenIndex = 3;
+            showScreen(screens[currentScreenIndex]);
+            updateProgress();
+            startGame3();
+        });
+
+        // --- Game 1: Memory Matching Game Logic ---
+        const game1Board = document.getElementById('matching-game-board');
+        const game1Message = document.getElementById('game1-message');
+        const nextGameBtn1 = document.getElementById('next-game-btn1');
+        const game1Cards = ['🌸', '💖', '⭐', '🌈', '🌸', '💖', '⭐', '🌈'];
+        let shuffledCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let lockBoard = false;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createBoard() {
+            shuffledCards = shuffle([...game1Cards]);
+            game1Board.innerHTML = '';
+            flippedCards = [];
+            matchedPairs = 0;
+            game1Message.textContent = '';
+            nextGameBtn1.style.display = 'none';
+
+            shuffledCards.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.classList.add('bg-pink-200', 'rounded-xl', 'aspect-square', 'cursor-pointer', 'flex', 'items-center', 'justify-center', 'text-4xl', 'font-bold', 'text-white', 'transition-transform', 'duration-300', 'transform', 'hover:scale-105');
+                card.dataset.emoji = emoji;
+                card.dataset.index = index;
+                card.addEventListener('click', flipCard);
+                game1Board.appendChild(card);
+            });
+        }
+
+        function flipCard(event) {
+            if (lockBoard) return;
+            const clickedCard = event.target;
+            if (clickedCard === flippedCards[0] || clickedCard.classList.contains('matched')) return;
+
+            clickedCard.classList.remove('bg-pink-200');
+            clickedCard.classList.add('bg-pink-400');
+            clickedCard.textContent = clickedCard.dataset.emoji;
+            flippedCards.push(clickedCard);
+
+            if (flippedCards.length === 2) {
+                lockBoard = true;
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.emoji === card2.dataset.emoji;
+            if (isMatch) {
+                disableCards();
+            } else {
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            const [card1, card2] = flippedCards;
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            card1.removeEventListener('click', flipCard);
+            card2.removeEventListener('click', flipCard);
+            matchedPairs++;
+            resetBoard();
+            if (matchedPairs === game1Cards.length / 2) {
+                game1Message.textContent = 'You did it! Game 1 passed!';
+                nextGameBtn1.style.display = 'block';
+            }
+        }
+
+        function unflipCards() {
+            setTimeout(() => {
+                const [card1, card2] = flippedCards;
+                card1.classList.remove('bg-pink-400');
+                card2.classList.remove('bg-pink-400');
+                card1.classList.add('bg-pink-200');
+                card2.classList.add('bg-pink-200');
+                card1.textContent = '';
+                card2.textContent = '';
+                resetBoard();
+            }, 1000);
+        }
+
+        function resetBoard() {
+            [flippedCards, lockBoard] = [[], false];
+        }
+
+        // --- Game 2: Catch the Hearts! Logic ---
+        const caughtCountDisplay = document.getElementById('balloon-count');
+        const game2Message = document.getElementById('game2-message');
+        const nextGameBtn2 = document.getElementById('next-game-btn2');
+        let heartsCaught = 0;
+        let heartInterval = null;
+
+        function startGame2() {
+            heartsCaught = 0;
+            caughtCountDisplay.textContent = 'Caught: 0/10';
+            game2Message.textContent = '';
+            nextGameBtn2.style.display = 'none';
+            balloonGameArea.innerHTML = '';
+            clearInterval(heartInterval);
+            heartInterval = setInterval(() => {
+                const isBomb = Math.random() < 0.2; // 20% chance of a bomb
+                if (isBomb) {
+                    createBombGame2();
+                } else {
+                    createHeart();
+                }
+            }, 800);
+        }
+
+        function createHeart() {
+            if (heartsCaught >= 10) {
+                clearInterval(heartInterval);
+                return;
+            }
+
+            const heart = document.createElement('div');
+            heart.classList.add('game-item');
+            heart.style.left = `${Math.random() * (balloonGameArea.offsetWidth - 50)}px`;
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.color = 'white';
+            heart.style.fontSize = `${Math.floor(Math.random() * 20) + 30}px`;
+            heart.style.animationDuration = `${Math.random() * 2 + 4}s`;
+
+            heart.addEventListener('click', (e) => {
+                e.stopPropagation();
+                heart.classList.add('pop');
+                heartsCaught++;
+                caughtCountDisplay.textContent = `Caught: ${heartsCaught}/10`;
+                setTimeout(() => heart.remove(), 200);
+                if (heartsCaught >= 10) {
+                    clearInterval(heartInterval);
+                    game2Message.textContent = 'You caught them all! Game 2 passed!';
+                    nextGameBtn2.style.display = 'block';
+                }
+            });
+            
+            balloonGameArea.appendChild(heart);
+        }
+
+        function createBombGame2() {
+            const bomb = document.createElement('div');
+            bomb.classList.add('game-item');
+            bomb.style.left = `${Math.random() * (balloonGameArea.offsetWidth - 50)}px`;
+            bomb.textContent = '💣';
+            bomb.style.color = '#ef4444';
+            bomb.style.fontSize = '2.5rem';
+            bomb.style.animationDuration = `${Math.random() * 2 + 4}s`;
+
+            bomb.addEventListener('click', (e) => {
+                e.stopPropagation();
+                bomb.classList.add('pop');
+                heartsCaught = 0;
+                caughtCountDisplay.textContent = `Caught: ${heartsCaught}/10`;
+                game2Message.textContent = 'Oh no! You hit a bomb! Your score has been reset.';
+                game2Message.classList.add('text-red-600');
+                setTimeout(() => {
+                    game2Message.textContent = '';
+                    game2Message.classList.remove('text-red-600');
+                    bomb.remove();
+                }, 1000);
+            });
+            
+            balloonGameArea.appendChild(bomb);
+        }
+        
+        // --- Game 3: Connect the Constellations! Logic (Rewritten) ---
+        const constellationGameArea = document.getElementById('constellation-game-area');
+        const constellationCountDisplay = document.getElementById('constellation-count');
+        const game3Message = document.getElementById('game3-message');
+        const nextGameBtn3 = document.getElementById('next-game-btn3');
+        const constellationMessageBox = document.getElementById('constellation-message-box');
+        let constellationsCompleted = 0;
+        let currentConstellation = [];
+        let nextStarIndex = 0;
+        
+        const constellations = [
+            {
+                name: 'Lyra',
+                meaning: 'The Lyre, a beautiful harp often associated with music and poetry. It symbolizes harmony and a beautiful creative spirit.',
+                image: 'https://cdn.pixabay.com/photo/2016/11/29/03/49/starry-night-1867160_960_720.jpg',
+                stars: [
+                    {x: 35, y: 30}, {x: 45, y: 15}, {x: 60, y: 25}, {x: 70, y: 40}, {x: 55, y: 50}, {x: 45, y: 35}, {x: 50, y: 55}
+                ],
+                lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [5, 1]]
+            },
+            {
+                name: 'Cygnus',
+                meaning: 'The Swan, majestically flying across the sky. It represents purity, grace, and an unwavering spirit of adventure.',
+                image: 'https://cdn.pixabay.com/photo/2016/11/29/03/49/starry-night-1867160_960_720.jpg',
+                stars: [
+                    {x: 20, y: 40}, {x: 35, y: 20}, {x: 50, y: 15}, {x: 65, y: 20}, {x: 80, y: 40}, {x: 50, y: 50}, {x: 35, y: 60}
+                ],
+                lines: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [5, 6]]
+            }
+        ];
+        
+        function startGame3() {
+            constellationsCompleted = 0;
+            constellationCountDisplay.textContent = 'Constellations: 0/2';
+            game3Message.textContent = 'These constellations will appear on 7th September! Connect the stars in order!';
+            nextGameBtn3.style.display = 'none';
+            constellationGameArea.innerHTML = '';
+            nextStarIndex = 0;
+            loadConstellation();
+        }
+
+        function loadConstellation() {
+            constellationGameArea.innerHTML = '';
+            constellationGameArea.querySelectorAll('.star-line').forEach(line => line.remove());
+            constellationMessageBox.classList.remove('visible');
+            constellationGameArea.style.backgroundImage = 'none';
+
+            if (constellationsCompleted >= constellations.length) {
+                game3Message.textContent = 'You completed all the constellations! Game 3 passed!';
+                nextGameBtn3.style.display = 'block';
+                return;
+            }
+
+            currentConstellation = constellations[constellationsCompleted];
+            nextStarIndex = 0;
+
+            currentConstellation.stars.forEach((pos, index) => {
+                const star = document.createElement('div');
+                star.classList.add('constellation-star');
+                star.style.left = `${pos.x}%`;
+                star.style.top = `${pos.y}%`;
+                star.dataset.index = index;
+                star.textContent = index + 1;
+                star.addEventListener('click', handleStarClick);
+                constellationGameArea.appendChild(star);
+            });
+        }
+
+        function handleStarClick(e) {
+            const clickedStar = e.target;
+            const clickedIndex = parseInt(clickedStar.dataset.index);
+
+            if (clickedIndex === nextStarIndex) {
+                clickedStar.classList.add('active');
+                if (nextStarIndex > 0) {
+                    drawConnection(currentConstellation.stars[nextStarIndex - 1], currentConstellation.stars[nextStarIndex]);
+                }
+                nextStarIndex++;
+                if (nextStarIndex === currentConstellation.stars.length) {
+                    constellationsCompleted++;
+                    constellationCountDisplay.textContent = `Constellations: ${constellationsCompleted}/2`;
+                    game3Message.textContent = '';
+                    constellationGameArea.style.backgroundImage = `url('${currentConstellation.image}')`;
+                    
+                    constellationMessageBox.innerHTML = `<h3 class="font-bold text-xl">${currentConstellation.name}</h3><p class="mt-2">${currentConstellation.meaning}</p>`;
+                    constellationMessageBox.classList.add('visible');
+                    
+                    setTimeout(loadConstellation, 4000);
+                }
+            } else {
+                game3Message.textContent = 'Wrong star! Try again from the beginning.';
+                constellationGameArea.querySelectorAll('.constellation-star').forEach(star => star.classList.remove('active'));
+                constellationGameArea.querySelectorAll('.star-line').forEach(line => line.remove());
+                nextStarIndex = 0;
+            }
+        }
+
+        function drawConnection(startPos, endPos) {
+            const line = document.createElement('div');
+            line.classList.add('star-line');
+            const dx = (endPos.x - startPos.x) * constellationGameArea.offsetWidth / 100;
+            const dy = (endPos.y - startPos.y) * constellationGameArea.offsetHeight / 100;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            line.style.left = `${startPos.x}%`;
+            line.style.top = `${startPos.y}%`;
+            line.style.width = `${distance}px`;
+            line.style.transform = `rotate(${angle}deg)`;
+            
+            constellationGameArea.appendChild(line);
+        }
+
+        // --- Game 4: The Quiz Logic ---
+        const q1Input = document.getElementById('q1-input');
+        const q2Input = document.getElementById('q2-input');
+        const q3Input = document.getElementById('q3-input');
+        const quizMessage = document.getElementById('game4-message');
+        const submitQuizBtn = document.getElementById('submit-quiz-btn');
+        const nextGameBtn4 = document.getElementById('next-game-btn4');
+
+        submitQuizBtn.addEventListener('click', () => {
+            const q1Answer = q1Input.value.trim().toLowerCase();
+            const q2Answer = q2Input.value.trim().toLowerCase();
+            const q3Answer = q3Input.value.trim().toLowerCase();
+
+            const correctQ1 = 'agb';
+            const correctQ2 = 'rohit saraf';
+            const correctQ3 = 'haardik k gandhi';
+
+            if (q1Answer === correctQ1 && q2Answer === correctQ2 && q3Answer === correctQ3) {
+                quizMessage.textContent = 'All answers are correct! You passed the quiz!';
+                quizMessage.classList.add('text-green-600');
+                quizMessage.classList.remove('text-red-600');
+                nextGameBtn4.style.display = 'block';
+            } else {
+                quizMessage.textContent = 'Oops! Some answers are incorrect. Try again!';
+                quizMessage.classList.add('text-red-600');
+                quizMessage.classList.remove('text-green-600');
+            }
+        });
+
+// --- Final Stage Logic ---
+const passwordInput = document.getElementById('password-input');
+const unlockBtn = document.getElementById('unlock-btn');
+const secretMessage = document.getElementById('secret-message');
+const messageBox = document.getElementById('secret-message-container');
+
+unlockBtn.addEventListener('click', () => {
+    if (passwordInput.value.toLowerCase() === 'lodhu') {
+        secretMessage.innerHTML = `
+            <p>Happy 22nd birthday Ashi !! 🥳 Ik u were all happy this past week for your birthday and we were constantly saying u aren’t getting anything, hehe had to do that 😭. Chalo abhi u are a grown up girl now! Idk what should I even say cuz honestly you know it all. You’re doing great, taking part in events, pushing yourself, trying new things… and tbh just trying isn’t enough, but we (me and Aejel) really want you to not just do okay but do good, do great. And we’ve got your back always, samjhi!!</p>
+            <p>Chill re the way you are, enjoy your 20s, keep laughing, keep vibing. Fuck the lodhu people, they don’t matter — you’re doing great, actually very good. You’re way better than you give yourself credit for, and we see that. We’re genuinely proud of you.</p>
+            <p>Bas ab grow karte raho, glow karte raho, enjoy kar, apna kar</p>
+            <p>ones again a very happy birthday ashi</p>
+            <br>
+            <p>I asked aejel if he wanted me to add anything : and here's what he said:<br>"Get a guy this year or u r dying single"</p>
+        `;
+        messageBox.style.display = 'block';
+        spawnConfetti();
+        passwordInput.disabled = true;
+        unlockBtn.disabled = true;
+    } else {
+        passwordInput.classList.add('border-red-500');
+        passwordInput.value = '';
+        setTimeout(() => {
+            passwordInput.classList.remove('border-red-500');
+        }, 1500);
+    }
+});
+
+        // Initial screen setup
+        showScreen(screens[currentScreenIndex]);
+        updateProgress();
+    </script>
+</body>
+</html>
