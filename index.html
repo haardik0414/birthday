@@ -399,37 +399,42 @@
         </div>
     </div>
 
-    <div class="collage">
-    <div class="photo-block aspect-square">
-        <img src="images/image-1.png" alt="Collage Photo 1">
-        <div class="photo-caption">Just a girl and her flowers. 🌼</div>
-    </div>
-    <div class="photo-block aspect-square">
-        <img src="images/image-2.png" alt="Collage Photo 2">
-        <div class="photo-caption">Glowing as usual</div>
-    </div>
-    <div class="photo-block aspect-square">
-        <img src="images/image-3.jpg" alt="Collage Photo 3">
-        <div class="photo-caption">Getting ready and looking pretty.</div>
-    </div>
-    <div class="photo-block aspect-square">
-        <img src="images/image-4.jpg" alt="Collage Photo 4">
-        <div class="photo-caption">That smile says it all</div>
-    </div>
-    <div class="photo-block aspect-square">
-        <img src="images/image-5.jpg" alt="Collage Photo 5">
-        <div class="photo-caption">The trio</div>
-    </div>
-    <div class="photo-block aspect-square">
-        <img src="images/image-6.jpg" alt="Collage Photo 6">
-        <div class="photo-caption">Black and white, but our memories are in full color</div>
-    </div>
-    <div class="photo-block locked-block aspect-square">
-        <i class="fas fa-lock text-5xl text-gray-400 mb-2"></i>
-        <p class="font-bold">kya kya karna padh tha hai tere liye</p>
-    </div>
-</div>
-
+    <!-- Final Stage -->
+    <div id="final-screen" class="screen container flex-col">
+        <div class="card">
+            <h2 class="text-4xl font-bold text-pink-500 mb-4 font-['Cormorant_Garamond']">You did it, Ashi! 🎉</h2>
+            <p class="text-lg text-gray-700 mb-4">You've unlocked this special space just for you.</p>
+            <!-- Collages (Placeholder images) -->
+            <div class="collage">
+            <div class="photo-block aspect-square">
+                <img src="images/image-1.png" alt="Collage Photo 1">
+                <div class="photo-caption">Just a girl and her flowers. 🌼</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-2.png" alt="Collage Photo 2">
+                <div class="photo-caption">Glowing as usual</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-3.jpg" alt="Collage Photo 3">
+                <div class="photo-caption">Getting ready and looking pretty.</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-4.jpg" alt="Collage Photo 4">
+                <div class="photo-caption">That smile says it all</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-5.jpg" alt="Collage Photo 5">
+                <div class="photo-caption">The trio</div>
+            </div>
+            <div class="photo-block aspect-square">
+                <img src="images/image-6.jpg" alt="Collage Photo 6">
+                <div class="photo-caption">Black and white, but our memories are in full color</div>
+            </div>
+            <div class="photo-block locked-block aspect-square">
+                <i class="fas fa-lock text-5xl text-gray-400 mb-2"></i>
+                <p class="font-bold">kya kya karna padh tha hai tere liye</p>
+            </div>
+        </div>
 
             <div class="mt-8">
                 <p class="text-lg font-semibold text-gray-700 mb-2">Unlock a secret message!</p>
@@ -877,8 +882,8 @@ unlockBtn.addEventListener('click', () => {
     if (passwordInput.value.toLowerCase() === 'lodhu') {
         secretMessage.innerHTML = `
             <p>Happy 22nd birthday Ashi !! 🥳 Ik u were all happy this past week for your birthday and we were constantly saying u aren’t getting anything, hehe had to do that 😭. Chalo abhi u are a grown up girl now! Idk what should I even say cuz honestly you know it all. You’re doing great, taking part in events, pushing yourself, trying new things… and tbh just trying isn’t enough, but we (me and Aejel) really want you to not just do okay but do good, do great. And we’ve got your back always, samjhi!!</p>
-            <p>Chill re the way you are, enjoy your 20s, keep laughing, keep vibing. Fuck the lodhu people, they don’t matter — you’re doing great, actually very good. You’re way better than you give yourself credit for, and we see that. We’re genuinely proud of you.</p>
-            <p>Bas ab grow karte raho, glow karte raho, enjoy kar, apna kar — life’s too short for bakwaas. This 22 is yours, own it properly 🔥</p>
+            <p>Chill re the way you are, enjoy your 20s, keep laughing, keep vibing. Fuck the unnessary people, they don’t matter + you’re doing great, actually very good. You’re way better than you give yourself credit for, and we see that. We’re genuinely proud of you.</p>
+            <p>Bas ab grow karte raho, glow karte raho, enjoy kar, apna kar</p>
             <p>ones again a very happy birthday ashi</p>
             <br>
             <p>I asked aejel if he wanted me to add anything : and here's what he said:<br>"Get a guy this year or u r dying single"</p>
@@ -895,6 +900,7 @@ unlockBtn.addEventListener('click', () => {
         }, 1500);
     }
 });
+
         // Initial screen setup
         showScreen(screens[currentScreenIndex]);
         updateProgress();
